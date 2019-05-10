@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 044320f3009fc814eaf4035cbb8f8472
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - inladen: {fileID: 32900000, guid: 4c96701b7a7ba10429c13b1b961cc5a1, type: 3}
+  - uitsnijden: {fileID: 32900000, guid: 6a1bac667dd246d48adfca8d3c6ebdc3, type: 3}
+  - error: {fileID: 32900000, guid: 0b984de2525386f4483dc797a0fe3857, type: 3}
+  - background: {instanceID: 0}
+  - vp: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
