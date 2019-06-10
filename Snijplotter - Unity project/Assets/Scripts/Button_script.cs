@@ -13,7 +13,8 @@ public class Button_script : MonoBehaviour , IPointerEnterHandler
     public VideoClip inladen;
     public VideoClip uitsnijden;
     public VideoClip error;
-    public Texture2D firstFrame;
+    //public AudioSource audio_inladen, audio_uitsnijden, audio_error;
+    public Texture2D inladenThumbnail, uitsnijdenThumbnail, errorThumbnail, firstFrame;
     public VideoPlayer vp;
     public GameObject playButton;
     private Image playButtonRend;
@@ -87,14 +88,17 @@ public class Button_script : MonoBehaviour , IPointerEnterHandler
             case "Button inladen":
 
                 vp.url = inladen_filePath;
+                firstFrame = inladenThumbnail;
                 //Debug.Log("name: " + inladen.name + "path: " + inladen.originalPath);
                 //vp_script.WebGLVideoOverride(inladen.originalPath, inladen.name);
                 break;
             case "Button uitsnijden":
                 vp.url = starten_filePath;
+                firstFrame = uitsnijdenThumbnail;
                 break;
             case "Button error":
                 vp.url = error_filePath;
+                firstFrame = errorThumbnail;
                 break;
             case "Back":
                 playButtonRend.color = new Color(1, 1, 1, 1);
@@ -103,12 +107,12 @@ public class Button_script : MonoBehaviour , IPointerEnterHandler
                 panels[1].SetActive(false);
                 break;
             default:
+                Debug.Log("Undefined button clicked");
                 break;
         }
         
         if (playbool)
         {
-            
             Debug.Log("playbool= true");
             vp.targetTexture.DiscardContents();
             Graphics.Blit(firstFrame, vp.targetTexture);
@@ -117,8 +121,6 @@ public class Button_script : MonoBehaviour , IPointerEnterHandler
             vp.Pause();
             vp.frame = 0;
         }
-        
-        
     }
 
     void EndReached(UnityEngine.Video.VideoPlayer vp)
@@ -180,7 +182,7 @@ public class Button_script : MonoBehaviour , IPointerEnterHandler
         else
         {
             print("Download was aborted.");
-            videoDownloadProgressText.text = "Download cancelled.";
+            videoDownloadProgressText.text = "Download canceled.";
         }
     }
 }

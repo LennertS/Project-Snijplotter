@@ -19,15 +19,42 @@ public class VideoPlayer_script : MonoBehaviour, IDragHandler, IPointerDownHandl
     Vector2 localPoint;
     private bool pauseOrPlayBool = false, showPause = false, showPlay = false;
     static float t = 0.0f;
+
+    AudioSource audioSource;
     
     // Start is called before the first frame update
     void Start()
     {
-        progress = GetComponent<Image>();
         vp.Pause();
+        progress = GetComponent<Image>();
         playImgRend = playImg.GetComponent<Image>();
         pauseImgRend = pauseImg.GetComponent<Image>();
         vp.skipOnDrop = true;
+        pauseOrPlayBool = true;
+        vp.Play();
+
+        /*
+        //<AUDIO FIX:>
+        // We want to play from a URL.
+        // Set the source mode FIRST, before changing audio settings;
+        // as setting the source mode will reset those.
+        vp.source = VideoSource.Url;
+
+        // Set mode to Audio Source.
+        vp.audioOutputMode = VideoAudioOutputMode.AudioSource;
+
+        // We want to control one audio track with the video player
+        vp.controlledAudioTrackCount = 1;
+
+        // We enable the first track, which has the id zero
+        vp.EnableAudioTrack(0, true);
+
+        // ...and we set the audio source for this track
+        vp.SetTargetAudioSource(0, audioSource);
+
+        // now set an url to play
+        vp.url = "...some url...";
+        //<\AUDIO FIX>*/
     }
 
     void OnEnable()
@@ -39,20 +66,16 @@ public class VideoPlayer_script : MonoBehaviour, IDragHandler, IPointerDownHandl
     // Update is called once per frame
     void Update()
     {
-        
-
         if (vp.frameCount > 0)
         {
             progress.fillAmount = (float)vp.frame / (float)vp.frameCount;
             handle.rectTransform.anchoredPosition = new Vector2((-progress.rectTransform.rect.width) / 2 + ((float)vp.frame / (float)vp.frameCount) * progress.rectTransform.rect.width, handle.rectTransform.anchoredPosition.y);
         }
 
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Playbutton();
         }
-
 
         if (pauseOrPlayBool)
         {
@@ -61,7 +84,6 @@ public class VideoPlayer_script : MonoBehaviour, IDragHandler, IPointerDownHandl
                 t = 1f;
                 showPause = false;
             }
-            
 
             if (vp.isPaused && vp.frame > 5)
             {
@@ -82,11 +104,7 @@ public class VideoPlayer_script : MonoBehaviour, IDragHandler, IPointerDownHandl
                     t -= 2f * Time.deltaTime;
                 }
             }
-
         }
-
-        
-
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -132,6 +150,4 @@ public class VideoPlayer_script : MonoBehaviour, IDragHandler, IPointerDownHandl
         pauseOrPlayBool = true;
         showPause = true;
     }
-
-
 }
