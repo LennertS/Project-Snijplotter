@@ -21,7 +21,8 @@ public class VideoPlayer_script : MonoBehaviour, IDragHandler, IPointerDownHandl
     static float t = 0.0f;
 
     AudioSource audioSource;
-    
+    private bool videoStarted;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +32,7 @@ public class VideoPlayer_script : MonoBehaviour, IDragHandler, IPointerDownHandl
         pauseImgRend = pauseImg.GetComponent<Image>();
         vp.skipOnDrop = true;
         pauseOrPlayBool = true;
-        vp.Play();
+        
 
         /*
         //<AUDIO FIX:>
@@ -61,11 +62,19 @@ public class VideoPlayer_script : MonoBehaviour, IDragHandler, IPointerDownHandl
     {
         pauseImgRend = pauseImg.GetComponent<Image>();
         pauseImgRend.color = new Color(1, 1, 1, 0);
+        videoStarted = false;
     }
-
+    
     // Update is called once per frame
     void Update()
     {
+        if (!videoStarted)
+        {
+            vp.Play();
+            videoStarted = true;
+        }
+
+
         if (vp.frameCount > 0)
         {
             progress.fillAmount = (float)vp.frame / (float)vp.frameCount;
@@ -125,7 +134,7 @@ public class VideoPlayer_script : MonoBehaviour, IDragHandler, IPointerDownHandl
         {
             Debug.Log("rectTransform: " + progress.rectTransform.position + "eventdata: " + eventData.position);
 
-            float pct = Mathf.InverseLerp(0, 1920, eventData.position.x);
+            float pct = Mathf.InverseLerp(0, Screen.width, eventData.position.x);
             Debug.Log("Skipping to " + pct*100f + "%");
             SkipToPercent(pct);
         }
